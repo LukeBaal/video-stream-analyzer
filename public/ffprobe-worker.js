@@ -1,6 +1,6 @@
 onmessage = (e) => {
     const type = e.data[0];
-    const file = e.data[1];
+    const files = e.data[1];
 
     let data;
 
@@ -10,29 +10,41 @@ onmessage = (e) => {
             if (!FS.analyzePath('/work').exists) {
                 FS.mkdir('/work');
             }
-            FS.mount(WORKERFS, { files: [file] }, '/work');
+            FS.mount(WORKERFS, { files }, '/work');
 
+           
             // Call the wasm module.
-            const info = Module.get_file_info('/work/' + file.name);
+            const infos = files.map(file => {
+                try {
+                    return Module.get_file_info('/work/' + file.name);
+                } catch (error) {
+                    console.log(`Error probing file: ${error}`);
+                }
+            });
+
+            console.log(infos);
 
             // Remap streams into collection.
-            const s = [];
-            for (let i = 0; i < info.streams.size(); i++) {
-                s.push(info.streams.get(i));
-            }
+            const data = infos.filter(info => info !== undefined).map(info => {
+                var s = [];
+                for (let i = 0; i < info.streams.size(); i++) {
+                    s.push(info.streams.get(i));
+                }
+                const versions = {
+                    libavutil:  Module.avutil_version(),
+                    libavcodec:  Module.avcodec_version(),
+                    libavformat:  Module.avformat_version(),
+                };
+    
+                // Send back data response.
+                return {
+                    ...info,
+                    url: info.url.slice(6),
+                    streams: s,
+                    versions,
+                }
+            });
 
-            const versions = {
-                libavutil:  Module.avutil_version(),
-                libavcodec:  Module.avcodec_version(),
-                libavformat:  Module.avformat_version(),
-            };
-
-            // Send back data response.
-            data = {
-                ...info,
-                streams: s,
-                versions,
-            }
             postMessage(data);
 
             // Cleanup mount.
@@ -69,4 +81,5 @@ onmessage = (e) => {
     }
 
 }
+
 self.importScripts('ffprobe-wasm.js'); // Load ffprobe into worker context.

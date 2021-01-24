@@ -1,10 +1,17 @@
+import './bootstrap.min.css';
 import './App.css';
-import FileInput from './components/FileInput';
+import DropWrapper from './components/DropWrapper';
+import { GlobalContext, GlobalProvider } from './context/GlobalState';
+import Results from './components/Results';
 
 function App() {
   return (
-    <div className="App container">
-      <FileInput />
+    <div className="App" style={{ width: "95%", margin: "auto"}}>
+      <GlobalProvider>
+        <DropWrapper />
+        {/* <FileInput /> */}
+        <Results />
+      </GlobalProvider>
     </div>
   );
 }
