@@ -13,7 +13,7 @@ const DropWrapper = () => {
         <div>
             <FileDrop onDrop={e => addFiles(e) } />
             {files.map(file => (
-                <span key={`badge${file.url}`} className="badge badge-light badge-pill mr-1" onClick={e => onBadgeClick(e)}>{file.url}</span>
+                <span key={`badge${file.url}`} className="badge badge-light badge-pill mr-1 file-badge" onClick={e => onBadgeClick(e)}>{file.url}</span>
             ))}
         </div>
     )

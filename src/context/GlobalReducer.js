@@ -11,6 +11,11 @@ const reducer = (state, action) => {
                 ...state,
                 files: state.files.filter(file => file.url !== action.payload)
             }
+        case 'SET_DIFFS':
+            return {
+                ...state,
+                diffs: action.payload
+            }
         default:
             return state;
     }

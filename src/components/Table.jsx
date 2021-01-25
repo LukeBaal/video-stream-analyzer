@@ -1,4 +1,5 @@
 import React from "react";
+// import { mapToType } from '../context/GlobalState';
 
 const Table = (props) => {
   const data = props.data ?? [];
@@ -7,6 +8,7 @@ const Table = (props) => {
 
   const body = data.map((entry, index) => (
     <tr key={index}> 
+      {/* <td>{entry.codec_type && mapToType.length > entry.codec_type ? mapToType[entry.codec_type] : null}</td> */}
       {Object.keys(entry ?? []).map((key) => (
           <td key={key}>{entry[key]}</td>
       ))}
@@ -18,7 +20,10 @@ const Table = (props) => {
     <div className="table-responsive">
       <table className="table table-dark table-hover">
         <thead>
-          <tr>{header && header.length > 0 ? header : null}</tr>
+          <tr>
+            {/* <th>Type</th> */}
+            {header && header.length > 0 ? header : null}
+          </tr>
         </thead>
         <tbody>{body && body.length > 0 ? body : null}</tbody>
       </table>

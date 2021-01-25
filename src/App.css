@@ -23,3 +23,7 @@
 .filedrop.ready {
   border: 3px solid #32cd32;
 }
+
+.file-badge {
+  cursor: pointer;
+}
