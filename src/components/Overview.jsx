@@ -5,7 +5,7 @@ import Table from './Table';
 const Overview = props => {
     const { info } = props;
 
-    const { duration } = info;
+    // const { duration } = info;
     // const metadata = {
     //     name: info.name,
     //     duration: duration,

@@ -1,5 +1,5 @@
 import React from "react";
-// import { mapToType } from '../context/GlobalState';
+import { mapToType } from '../context/GlobalState';
 
 const Table = (props) => {
   const data = props.data ?? [];
@@ -8,10 +8,19 @@ const Table = (props) => {
 
   const body = data.map((entry, index) => (
     <tr key={index}> 
-      {/* <td>{entry.codec_type && mapToType.length > entry.codec_type ? mapToType[entry.codec_type] : null}</td> */}
-      {Object.keys(entry ?? []).map((key) => (
-          <td key={key}>{entry[key]}</td>
-      ))}
+      {/* <td>{mapToType(entry.codec_type)}</td> */}
+      {Object.keys(entry ?? []).map((key) => {
+        switch(key) {
+          case 'codec_type':
+            return (
+              <td key={key}>{mapToType(entry[key])}</td>
+            );
+          default:
+            return (
+              <td key={key}>{entry[key]}</td>
+            );
+        }
+      })}
     </tr>
     )
   );

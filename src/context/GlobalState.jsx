@@ -8,8 +8,20 @@ const initialState = {
     worker: new Worker("ffprobe-worker.js")
 }
 
-export const mapToType = ["VIDEO", "AUDIO"];
+export const STREAM_TYPES = ["VIDEO", "AUDIO", "DATA", "SUBTITLE", "ATTACHMENT", "NB"];
 
+/**
+ * Convert stream type int to name
+ * @param {number} type typeInt of stream codec type
+ * @return The type name
+ */
+export const mapToType = type => {
+    if (type === null || type === undefined || type === -1 || type >= STREAM_TYPES.length) {
+        return "UNKNOWN";
+    } else {
+        return STREAM_TYPES[type];
+    }
+}
 
 export const GlobalContext = createContext(initialState);
 

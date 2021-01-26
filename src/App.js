@@ -1,7 +1,7 @@
 import './bootstrap.min.css';
 import './App.css';
 import DropWrapper from './components/DropWrapper';
-import { GlobalContext, GlobalProvider } from './context/GlobalState';
+import { GlobalProvider } from './context/GlobalState';
 import Results from './components/Results';
 
 function App() {
