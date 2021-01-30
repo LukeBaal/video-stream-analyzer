@@ -8,7 +8,17 @@ const initialState = {
     worker: new Worker("ffprobe-worker.js")
 }
 
-export const STREAM_TYPES = ["VIDEO", "AUDIO", "DATA", "SUBTITLE", "ATTACHMENT", "NB"];
+// export const STREAM_TYPES = ["VIDEO", "AUDIO", "DATA", "SUBTITLE", "ATTACHMENT", "NB"];
+export const STREAM_TYPES = [
+    { name: "Video", icon: "film" }, 
+    { name: "Audio", icon: "music" },
+    { name: "Data", icon: "database" },
+    { name: 'Subtitle', icon: 'closed-captioning' },
+    { name: 'Attachement', icon: 'paperclip' }, 
+    { name: "NB", icon: 'question'}
+];
+
+const mapToIcon = type => <i className={`fas fa-${type.icon}`} title={type.name} />;
 
 /**
  * Convert stream type int to name
@@ -19,7 +29,7 @@ export const mapToType = type => {
     if (type === null || type === undefined || type === -1 || type >= STREAM_TYPES.length) {
         return "UNKNOWN";
     } else {
-        return STREAM_TYPES[type];
+        return mapToIcon(STREAM_TYPES[type]);
     }
 }
 
@@ -70,9 +80,32 @@ export const GlobalProvider = props => {
 
     function addFiles(newFiles) {
         worker.onmessage = e => {
+            console.log(e.data);
+            const files = e.data.map(file => ({
+                ...file,
+                streams: file.streams?.map(stream => {
+                    const { id, start_time, duration, codec_name, format, bit_rate, time_base, width, height, channels, sample_rate, frame_size } = stream;
+                    return { 
+                        id,
+                        type: mapToType(stream.codec_type),
+                        duration,
+                        bit_rate,
+                        time_base,
+                        codec_name,
+                        start_time,
+                        format,
+                        width,
+                        height,
+                        channels,
+                        sample_rate,
+                        frame_size
+                    }
+                })
+            }));
+
             dispatch({
                 type: "ADD_FILES",
-                payload: e.data
+                payload: files
             });
 
             // determineDiffs(e.data);
@@ -85,14 +118,7 @@ export const GlobalProvider = props => {
 
         files = files
             .filter(file => state.files
-            .filter(f => f.url === file.name).length === 0);
-            // .map(f => f ({
-            //     ...f,
-            //     streams: f.streams.map(stream => ({ 
-            //         ...stream, 
-            //         type: mapToType.length > stream.codec_type ? mapToType(stream.codec_type) : "UNKNOWN" 
-            //     }))
-            // }));
+            .filter(f => f.url === file.name).length === 0)
 
     
         worker.postMessage(["get_file_info", files]);

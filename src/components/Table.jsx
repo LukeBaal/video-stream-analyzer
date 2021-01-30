@@ -8,19 +8,7 @@ const Table = (props) => {
 
   const body = data.map((entry, index) => (
     <tr key={index}> 
-      {/* <td>{mapToType(entry.codec_type)}</td> */}
-      {Object.keys(entry ?? []).map((key) => {
-        switch(key) {
-          case 'codec_type':
-            return (
-              <td key={key}>{mapToType(entry[key])}</td>
-            );
-          default:
-            return (
-              <td key={key}>{entry[key]}</td>
-            );
-        }
-      })}
+      {Object.keys(entry ?? []).map((key) => <td key={key}>{entry[key]}</td>)}
     </tr>
     )
   );
@@ -30,7 +18,6 @@ const Table = (props) => {
       <table className="table table-dark table-hover">
         <thead>
           <tr>
-            {/* <th>Type</th> */}
             {header && header.length > 0 ? header : null}
           </tr>
         </thead>

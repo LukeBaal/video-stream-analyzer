@@ -1,7 +1,9 @@
-import React, {useEffect, useState, createRef} from 'react';
+import React, {useEffect, useState, createRef, useContext} from 'react';
+import { GlobalContext } from '../context/GlobalState';
 
 const FileDrop = ({ onDrop, children }) => {
     const [drag, setDrag] = useState(false);
+    const { files } = useContext(GlobalContext);
     // const [filename, setFilename] = useState('');
     let dropRef = createRef();
     let dragCounter = 0;
@@ -50,6 +52,14 @@ const FileDrop = ({ onDrop, children }) => {
         div.removeEventListener('drop', handleDrop);
       };
     });
+
+    let classNames = 'filedrop center-text-container';
+    if (drag) {
+      classNames += ' drag';
+    }
+    if (files.length === 0) {
+      classNames += ' border';
+    }
   
     return (
       // <div
@@ -61,10 +71,18 @@ const FileDrop = ({ onDrop, children }) => {
       //   {filename && !drag ? <div>{filename}</div> : <div>Drop a file here!</div>}
       // </div>
       <div 
-        className={ drag ? 'filedrop drag' : 'filedrop' }
-        style={{position: "absolute", width: "100%", height: "100%", top: "0", left: "0" }}
+        className={classNames}
+        style={{
+          position: "relative", 
+          width: "100%", 
+          height: "100%", 
+          top: "0", 
+          left: "0",
+
+        }}
         ref={dropRef}
       >
+        {files.length === 0 ? <h1>Drop Files Here</h1> : null}
       </div>
     );
   };

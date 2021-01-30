@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import Table from './Table';
+import { GlobalContext } from '../context/GlobalState';
 
 const Overview = props => {
     const { info } = props;
+    const { deleteFile } = useContext(GlobalContext);
 
     // const { duration } = info;
     // const metadata = {
@@ -18,7 +20,10 @@ const Overview = props => {
     return (
         <div className="card mt-1">
             <div className="card-body">
-                <h4 className="card-title">{info.url}</h4>
+                <div className="card-title" style={{ display: "flex", justifyContent: "space-between"}}>
+                    <h4>{info.url}</h4>
+                    <button className="btn btn-danger btn-sm" onClick={() => deleteFile(info.url)}>X</button>
+                </div>
                 <h6 className="card-subtitle mb-2">
                     <span style={{ marginRight: "1em"}}>Duration: {info.duration}</span>
                     <span>Bitrate: {info.bit_rate}</span>
