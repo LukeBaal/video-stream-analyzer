@@ -1,8 +1,8 @@
 import React, {useEffect, useState, createRef} from 'react';
 
-const FileDrop = ({ onDrop }) => {
+const FileDrop = ({ onDrop, children }) => {
     const [drag, setDrag] = useState(false);
-    const [filename, setFilename] = useState('');
+    // const [filename, setFilename] = useState('');
     let dropRef = createRef();
     let dragCounter = 0;
   
@@ -52,13 +52,19 @@ const FileDrop = ({ onDrop }) => {
     });
   
     return (
-      <div
+      // <div
+      //   ref={dropRef}
+      //   className={
+      //     drag ? 'filedrop drag' : filename ? 'filedrop ready' : 'filedrop'
+      //   }
+      // >
+      //   {filename && !drag ? <div>{filename}</div> : <div>Drop a file here!</div>}
+      // </div>
+      <div 
+        className={ drag ? 'filedrop drag' : 'filedrop' }
+        style={{position: "absolute", width: "100%", height: "100%", top: "0", left: "0" }}
         ref={dropRef}
-        className={
-          drag ? 'filedrop drag' : filename ? 'filedrop ready' : 'filedrop'
-        }
       >
-        {filename && !drag ? <div>{filename}</div> : <div>Drop a file here!</div>}
       </div>
     );
   };

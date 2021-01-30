@@ -7,7 +7,7 @@ const Results = () => {
     const { files } = useContext(GlobalContext);
 
     return (
-        <div className="mt-2">
+        <div className="mt-2" style={{ width: "95%", margin: "auto"}}>
             {files.map(file => (
                 <Overview key={file.url} info={file}/>
             ))}
