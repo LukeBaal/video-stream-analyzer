@@ -22,8 +22,6 @@ onmessage = (e) => {
                 }
             });
 
-            console.log(infos);
-
             // Remap streams into collection.
             const data = infos.filter(info => info !== undefined).map(info => {
                 var s = [];
